@@ -1,14 +1,31 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import SearchForm from "../components/SearchForm";
+import WelcomeSection from "../components/WelcomeSection";
+function HomePage() {
+  const [searchCity, setSearchCity] = useState("");
+  const navigate = useNavigate();
 
-const Home = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchCity.trim()) {
+      navigate(`/weather/${encodeURIComponent(searchCity.trim())}`);
+      setSearchCity("");
+    }
+  };
+
   return (
-    <div>
-      <h1> HOME </h1>
-      <nav>
-        <Link to={"/about"}>About</Link> | <Link to="/contact">Contact</Link>
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center">
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
+        <WelcomeSection />
+        <SearchForm
+          searchCity={searchCity}
+          setSearchCity={setSearchCity}
+          onSearch={handleSearch}
+        />
+      </div>
     </div>
   );
-};
+}
 
-export default Home;
+export default HomePage;
