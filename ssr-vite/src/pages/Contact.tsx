@@ -3,7 +3,7 @@ import { Link } from "react-router";
 const Contact = () => {
   return (
     <div>
-      <h1> About! </h1>
+      <h1> Contact! </h1>
       <nav>
         <Link to={"/"}>Home</Link> | <Link to="/about">About</Link>
       </nav>
