@@ -1,11 +1,9 @@
-import { 
-  createBrowserRouter, 
-  RouterProvider 
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import HydrationBoundary from "./components/HydrationBoundry";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +25,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <HydrationBoundary>
+      <RouterProvider router={router} />
+    </HydrationBoundary>
+  );
 }
 
 export default App;
