@@ -1,30 +1,12 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
+// App.tsx
+import { RouterProvider } from "react-router";
 import HydrationBoundary from "./components/HydrationBoundry";
+import type { DataRouter } from "react-router-dom";
+interface AppProps {
+  router: DataRouter
+}
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/about",
-    element: <About />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
-
-function App() {
+function App({ router }: AppProps) {
   return (
     <HydrationBoundary>
       <RouterProvider router={router} />

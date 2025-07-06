@@ -22,13 +22,23 @@ async function createServer() {
     
     console.log('Vite server created successfully')
     
-    // Use vite's connect instance as middleware
     app.use(vite.middlewares)
     
     app.use('*', async (req, res, next) => {
       const url = req.originalUrl
       
-      console.log(`Processing request: ${url}`)
+      // Skip DevTools, API calls, and asset requests
+      if (
+        url.includes('.well-known') ||
+        url.includes('favicon.ico') ||
+        url.includes('manifest.json') ||
+        url.startsWith('/api/') ||
+        url.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)
+      ) {
+        return next()
+      }
+      
+      console.log(`Processing SSR request: ${url}`)
       
       try {
         // 1. Read index.html

@@ -1,16 +1,17 @@
-import Home from "../pages/Home";
+import HomePage from "../pages/Home";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
+import CityPage from "../pages/City";
 
 export const routes = [
   {
     path: "/",
-    element: <Home />,
+    element: <HomePage />,
   },
   {
     path: "/:city",
-    element: <About />,
+    element: <CityPage />,
   },
   {
     path: "/about",
