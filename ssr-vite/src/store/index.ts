@@ -1,11 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
 import weatherSlice from "./slices/weatherSlice";
+import type { CurrentWeather, ComparisonCity } from "../types";
 
-export const store = configureStore({
-    reducer:{
-        weather:weatherSlice
-    }
-})
+interface WeatherState {
+  current: CurrentWeather;
+  comparison: ComparisonCity[];
+}
+interface PreloadState {
+  weather: WeatherState;
+}
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export const createStore = (preloadedState: PreloadState) => {
+  return configureStore({
+    reducer: {
+      weather: weatherSlice,
+    },
+    preloadedState,
+  });
+};
+
+// Export types
+export type RootState = ReturnType<ReturnType<typeof createStore>["getState"]>;
+export type AppDispatch = ReturnType<typeof createStore>["dispatch"];

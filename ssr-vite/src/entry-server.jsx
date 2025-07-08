@@ -1,17 +1,20 @@
 import { renderToString } from "react-dom/server";
-import { createMemoryRouter, RouterProvider } from "react-router";
+import { createMemoryRouter } from "react-router";
 import { routes } from "./shared/routes";
-import HydrationBoundry from "./components/HydrationBoundry";
+import { createStore } from "./store";
+import App from "./App"; 
+
 export async function render(url) {
+  const store = createStore();
   const router = createMemoryRouter(routes, {
     initialEntries: [url],
   });
 
+
   const html = renderToString(
-    <HydrationBoundry>
-      <RouterProvider router={router} />
-    </HydrationBoundry>
+    <App router={router} store={store} />
   );
 
-  return html;
+  const preloadedState = store.getState();
+  return { html, preloadedState };
 }

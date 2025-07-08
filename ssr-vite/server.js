@@ -6,15 +6,15 @@ import { createServer as createViteServer } from 'vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+function serializeState(state) {
+  return JSON.stringify(state).replace(/</g, '\\u003c')
+}
+
 async function createServer() {
   try {
-    const app = express()
-    
+    const app = express()   
     console.log('Creating Vite server...')
     
-    // Create Vite server in middleware mode and configure the app type as
-    // 'custom', disabling Vite's own HTML serving logic so parent server
-    // can take control
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'custom'
@@ -27,7 +27,6 @@ async function createServer() {
     app.use('*', async (req, res, next) => {
       const url = req.originalUrl
       
-      // Skip DevTools, API calls, and asset requests
       if (
         url.includes('.well-known') ||
         url.includes('favicon.ico') ||
@@ -38,38 +37,66 @@ async function createServer() {
         return next()
       }
       
-      console.log(`Processing SSR request: ${url}`)
+      console.log(`\n🔍 Processing SSR request: ${url}`)
       
       try {
         // 1. Read index.html
         const indexPath = path.resolve(__dirname, 'index.html')
-        console.log(`Looking for index.html at: ${indexPath}`)
+        console.log(`📄 Looking for index.html at: ${indexPath}`)
         
         if (!fs.existsSync(indexPath)) {
           throw new Error(`index.html not found at ${indexPath}`)
         }
         
         let template = fs.readFileSync(indexPath, 'utf-8')
+        console.log('📄 Original template length:', template.length)
         
         // 2. Apply Vite HTML transforms
         template = await vite.transformIndexHtml(url, template)
+        console.log('📄 After Vite transform length:', template.length)
         
         // 3. Load the server entry
-        console.log('Loading server entry...')
+        console.log('📦 Loading server entry...')
         const { render } = await vite.ssrLoadModule('/src/entry-server.jsx')
         
-        // 4. render the app HTML
-        const appHtml = await render(url)
+        console.log('🎨 Rendering app with Redux store...')
+        const { html: appHtml, preloadedState } = await render(url)
         
-        // 5. Inject the app-rendered HTML into the template
-        const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+        // 5. Create the script tag with serialized Redux state
+        const serializedState = serializeState(preloadedState)
+        const stateScript = `
+          <script>
+            console.log('🚀 State script executing...');
+            window.__PRELOADED_STATE__ = ${serializedState};
+            console.log('📦 Set window.__PRELOADED_STATE__:', window.__PRELOADED_STATE__);
+          </script>
+        `
+        console.log('📜 State script to inject:')
+        console.log(stateScript)
         
-        // 6. Send the rendered HTML back
+        // 6. Inject the app-rendered HTML into the template
+        let html = template.replace(`<!--ssr-outlet-->`, appHtml)
+        console.log('✅ Injected app HTML into template')
+                
+        // 🔍 DEBUG: Check if state script was actually injected
+        if (html.includes('window.__PRELOADED_STATE__')) {
+          console.log('✅ State script successfully injected into HTML')
+        } else {
+          console.log('❌ State script NOT found in final HTML')
+        }
+        
+        const headMatch = html.match(/<head>[\s\S]*?<\/head>/);
+        if (headMatch) {
+          console.log('📄 Final <head> section:')
+          console.log(headMatch[0])
+        }
+        
+        console.log('✅ SSR rendering completed successfully\n')
+        
+        // 8. Send the rendered HTML back
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
       } catch (e) {
-        console.error('Error processing request:', e)
-        // If an error is caught, let Vite fix the stack trace so it maps back
-        // to your actual source code
+        console.error('❌ Error processing request:', e)
         vite.ssrFixStacktrace(e)
         next(e)
       }
@@ -80,7 +107,6 @@ async function createServer() {
       console.log(`🚀 Server running at http://localhost:${port}`)
     })
     
-    // Handle server errors
     server.on('error', (err) => {
       console.error('Server error:', err)
       process.exit(1)

@@ -8,64 +8,15 @@ import type { WeatherData } from '../../types';
 import CurrentWeatherCard from './components/CurrentWeather/CurrentWeatherCard';
 import CurrentWeatherTitle from './components/CurrentWeatherTitle';
 import BackButton from './components/BackButton';
-
-const weatherData: WeatherData = {
-  current: {
-    city: "New York",
-    country: "USA",
-    temperature: 24,
-    condition: "Partly Cloudy",
-    humidity: 65,
-    windSpeed: 12,
-    visibility: 10,
-    icon: "partly-cloudy"
-  },
-  comparison: [
-    {
-      city: "London",
-      country: "UK",
-      temperature: 18,
-      condition: "Rainy",
-      icon: "rainy"
-    },
-    {
-      city: "Tokyo",
-      country: "Japan",
-      temperature: 28,
-      condition: "Sunny",
-      icon: "sunny"
-    },
-    {
-      city: "Sydney",
-      country: "Australia",
-      temperature: 22,
-      condition: "Cloudy",
-      icon: "cloudy"
-    },
-    {
-      city: "Mumbai",
-      country: "India",
-      temperature: 32,
-      condition: "Thunderstorm",
-      icon: "thunderstorm"
-    },
-    {
-      city: "Moscow",
-      country: "Russia",
-      temperature: -2,
-      condition: "Snow",
-      icon: "snow"
-    }
-  ]
-};
-
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store';
 
 function CityPage() {
+  const weatherData:WeatherData = useSelector((state:RootState)=>state.weather);
   const { city } = useParams();
   const navigate = useNavigate();
   const [searchCity, setSearchCity] = useState('');
   const [currentWeather, setCurrentWeather] = useState(weatherData.current);
-
   useEffect(() => {
     if (city) {
 
