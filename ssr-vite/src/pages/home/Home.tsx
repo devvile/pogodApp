@@ -1,9 +1,9 @@
 import {useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
-import SearchForm from "../components/SearchForm";
-import WelcomeSection from "../components/WelcomeSection";
-import Loader from "../components/Loader";
-import LazyHydrate from "../components/LazyHydrate";
+import SearchForm from "../../components/SearchForm";
+import WelcomeSection from "./components/WelcomeSection";
+import Loader from "../../components/Loader";
+import LazyHydrate from "../../components/LazyHydrate";
 function HomePage() {
   const [searchCity, setSearchCity] = useState("");
   const navigate = useNavigate();
