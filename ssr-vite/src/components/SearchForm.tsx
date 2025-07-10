@@ -11,8 +11,6 @@ function SearchForm({ searchCity, setSearchCity, onSearch }: SearchFormProps) {
   return (
     <div className="mb-8">
       <form onSubmit={onSearch} className="relative">
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
           <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl">
             <div className="flex items-center">
               <Search className="ml-6 text-slate-300" size={24} />
@@ -31,7 +29,6 @@ function SearchForm({ searchCity, setSearchCity, onSearch }: SearchFormProps) {
               </button>
             </div>
           </div>
-        </div>
       </form>
     </div>
   );

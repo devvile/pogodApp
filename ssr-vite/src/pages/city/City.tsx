@@ -19,7 +19,6 @@ function CityPage() {
   const [currentWeather, setCurrentWeather] = useState(weatherData.current);
   useEffect(() => {
     if (city) {
-
       setCurrentWeather({
         ...currentWeather,
         city: decodeURIComponent(city),
