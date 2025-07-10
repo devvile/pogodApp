@@ -7,9 +7,10 @@ import ComparisonCities from './components/ComaprisonCities';
 import type { WeatherData } from '../../types/weather';
 import CurrentWeatherCard from './components/CurrentWeather/CurrentWeatherCard';
 import CurrentWeatherTitle from './components/CurrentWeatherTitle';
-import BackButton from './components/BackButton';
+import BackButton from '../../components/ui/BackButton';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store';
+import { useCurrentWeather } from '../../hooks/useWeather';
 
 function CityPage() {
   const weatherData:WeatherData = useSelector((state:RootState)=>state.weather);
@@ -17,6 +18,10 @@ function CityPage() {
   const navigate = useNavigate();
   const [searchCity, setSearchCity] = useState('');
   const [currentWeather, setCurrentWeather] = useState(weatherData.current);
+
+  const {data, isLoading, error} = useCurrentWeather("Warsaw");
+
+
   useEffect(() => {
     if (city) {
       setCurrentWeather({

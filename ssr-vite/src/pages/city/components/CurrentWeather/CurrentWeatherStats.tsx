@@ -1,6 +1,6 @@
 import { Droplets, Wind, Eye } from "lucide-react";
 
-import type { CurrentWeather } from "../../../../types";
+import type { CurrentWeather } from "../../../../types/weather";
 import CurrentWeatherStatsCard from "./CurrentWeatherStatsCard";
 
 interface CurrentWeatherStatsProps {
