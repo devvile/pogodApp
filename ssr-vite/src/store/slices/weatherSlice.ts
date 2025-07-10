@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { ComparisonCity, CurrentWeather } from "../../types";
+import type { ComparisonCity, CurrentWeather } from "../../types/weather";
 
 
 interface WeatherState{

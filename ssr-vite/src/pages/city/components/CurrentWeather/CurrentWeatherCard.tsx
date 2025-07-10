@@ -1,7 +1,7 @@
 import CurrentWeatherStats from "./CurrentWeatherStats";
 import { MapPin } from "lucide-react";
 import WeatherIcon from "../WeatherIcon";
-import type { CurrentWeather } from "../../../../types";
+import type { CurrentWeather } from "../../../../types/weather";
 
 interface CurrentWeatherCardProps{
     currentWeather:CurrentWeather

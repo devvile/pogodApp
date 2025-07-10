@@ -4,7 +4,7 @@ import {
   Search, 
 } from 'lucide-react';
 import ComparisonCities from './components/ComaprisonCities';
-import type { WeatherData } from '../../types';
+import type { WeatherData } from '../../types/weather';
 import CurrentWeatherCard from './components/CurrentWeather/CurrentWeatherCard';
 import CurrentWeatherTitle from './components/CurrentWeatherTitle';
 import BackButton from './components/BackButton';
@@ -30,7 +30,7 @@ function CityPage() {
   const handleSearch = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchCity.trim()) {
-      navigate(`/weather/${encodeURIComponent(searchCity.trim())}`);
+      navigate(`${encodeURIComponent(searchCity.trim())}`);
       setSearchCity('');
     }
   };

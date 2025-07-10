@@ -1,14 +1,5 @@
-
-import React from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Sun, 
-  Cloud, 
-  CloudRain,
-  CloudSnow,
-  Zap
-} from 'lucide-react';
-import type { ComparisonCity} from '../../../types';
+import type { ComparisonCity} from '../../../types/weather';
 import WeatherIcon from './WeatherIcon';
 
 export interface ComparisonCitiesProps {

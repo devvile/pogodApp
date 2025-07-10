@@ -76,15 +76,7 @@ async function createServer() {
         
         // 6. Inject the app-rendered HTML into the template
         let html = template.replace(`<!--ssr-outlet-->`, appHtml)
-        console.log('✅ Injected app HTML into template')
-                
-        // 🔍 DEBUG: Check if state script was actually injected
-        if (html.includes('window.__PRELOADED_STATE__')) {
-          console.log('✅ State script successfully injected into HTML')
-        } else {
-          console.log('❌ State script NOT found in final HTML')
-        }
-        
+        console.log('✅ Injected app HTML into template')   
         const headMatch = html.match(/<head>[\s\S]*?<\/head>/);
         if (headMatch) {
           console.log('📄 Final <head> section:')
