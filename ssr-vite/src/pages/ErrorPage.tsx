@@ -9,7 +9,6 @@ function ErrorPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center px-4">
       <div className="text-center max-w-2xl mx-auto">
-        {/* Error Icon */}
         <div className="mb-2">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-900 to-purple-900 rounded-full mb-6 shadow-2xl">
             <AlertTriangle className="text-white" size={40} />
@@ -23,7 +22,6 @@ function ErrorPage() {
            Unexpected Error occured please try again...
           </p>
         </div>
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <button
             onClick={handleRetry}

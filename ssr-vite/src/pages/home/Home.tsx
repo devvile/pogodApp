@@ -7,7 +7,6 @@ import LazyHydrate from "../../components/LazyHydrate";
 function HomePage() {
   const [searchCity, setSearchCity] = useState("");
   const navigate = useNavigate();
-
   const handleSearch = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchCity.trim()) {

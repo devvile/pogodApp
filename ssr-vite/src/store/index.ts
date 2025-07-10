@@ -1,11 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import weatherSlice from "./slices/weatherSlice";
-import type { CurrentWeather, ComparisonCity } from "../types/weather";
-
-interface WeatherState {
-  current: CurrentWeather;
-  comparison: ComparisonCity[];
-}
+import type { WeatherState } from "./slices/weatherSlice";
 
 interface PreloadState {
   weather: WeatherState;

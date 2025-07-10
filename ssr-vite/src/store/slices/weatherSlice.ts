@@ -1,68 +1,90 @@
+// store/weatherSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
-import type { ComparisonCity, CurrentWeather } from "../../types/weather";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { CurrentWeather, ComparisonCity, WeatherData} from "../../types/weather"
+import { DEFAULT_COMPARISON_CITIES } from "../../const/config";
 
-
-interface WeatherState{
-    current:CurrentWeather,
-    comparison: ComparisonCity[]
+export interface WeatherState {
+  // Weather data (updated by TanStack Query)
+  currentWeather: CurrentWeather | null;
+  comparisonWeather: ComparisonCity[];
+  
+  // UI state
+  comparisonCities: string[];
+  selectedCity: string | null;
+  
+  // Loading states (synced from TanStack Query)
+  isLoading: boolean;
+  error: string | null;
 }
 
-const initialState : WeatherState = {
-    current: {
-      city: "New York",
-      country: "USA",
-      temperature: 24,
-      condition: "Partly Cloudy",
-      humidity: 65,
-      windSpeed: 12,
-      visibility: 10,
-      icon: "partly-cloudy"
-    },
-    comparison: [
-      {
-        city: "London",
-        country: "UK",
-        temperature: 18,
-        condition: "Rainy",
-        icon: "rainy"
-      },
-      {
-        city: "Tokyo",
-        country: "Japan",
-        temperature: 28,
-        condition: "Sunny",
-        icon: "sunny"
-      },
-      {
-        city: "Sydney",
-        country: "Australia",
-        temperature: 22,
-        condition: "Cloudy",
-        icon: "cloudy"
-      },
-      {
-        city: "Mumbai",
-        country: "India",
-        temperature: 32,
-        condition: "Thunderstorm",
-        icon: "thunderstorm"
-      },
-      {
-        city: "Moscow",
-        country: "Russia",
-        temperature: -2,
-        condition: "Snow",
-        icon: "snow"
-      }
-    ]
-  };
+const initialState: WeatherState = {
+  currentWeather: null,
+  comparisonWeather: [],
+  comparisonCities: DEFAULT_COMPARISON_CITIES,
+  selectedCity: null,
+  isLoading: false,
+  error: null,
+};
 
 export const weatherSlice = createSlice({
-    name: "weather",
-    initialState,
-    reducers:{
-        
-    }
-})
+  name: "weather",
+  initialState,
+  reducers: {
+    setWeatherData: (state, action: PayloadAction<WeatherData>) => {
+      state.currentWeather = action.payload.current;
+      state.comparisonWeather = action.payload.comparison;
+      state.error = null;
+    },
+    
+    setCurrentWeather: (state, action: PayloadAction<CurrentWeather>) => {
+      state.currentWeather = action.payload;
+    },
+    
+    setComparisonWeatherData: (state, action: PayloadAction<ComparisonCity[]>) => {
+      state.comparisonWeather = action.payload;
+    },
+    
+    setWeatherLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    
+    setWeatherError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+    
+    clearWeatherError: (state) => {
+      state.error = null;
+    },
+    
+    
+    setComparisonCities: (state, action: PayloadAction<string[]>) => {
+      state.comparisonCities = action.payload;
+    },
+    setSelectedCity: (state, action: PayloadAction<string | null>) => {
+      state.selectedCity = action.payload;
+    },
+    
+    // Reset actions
+    resetWeatherData: (state) => {
+      state.currentWeather = null;
+      state.comparisonWeather = [];
+      state.isLoading = false;
+      state.error = null;
+    },
+  }
+});
 
-export default weatherSlice.reducer
+export const {
+  setWeatherData,
+  setCurrentWeather,
+  setComparisonWeatherData,
+  setWeatherLoading,
+  setWeatherError,
+  clearWeatherError,
+  setComparisonCities,
+  setSelectedCity,
+  resetWeatherData,
+} = weatherSlice.actions;
+
+export default weatherSlice.reducer;
