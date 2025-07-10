@@ -3,6 +3,7 @@ import type {OpenWeatherError, OpenWeatherResponse } from '../types/weather';
 import { WeatherApiError } from '../types/weather';
 import { BASE_URL, API_KEY } from '../const/config';
 import { transformToComparisonCity,transformToCurrentWeather } from './helpers';
+import { DEFAULT_COMPARISON_CITIES } from '../const/config';
 
 if (!API_KEY) {
     throw new Error('OpenWeather API key is required. Please set REACT_APP_OPENWEATHER_API_KEY in your environment variables.');
@@ -73,16 +74,7 @@ export const fetchCurrentWeather = async (city: string): Promise<CurrentWeather>
       );
     }
   };
-  
-  // Default comparison cities (you can make this configurable later)
-  export const DEFAULT_COMPARISON_CITIES = [
-    'London',
-    'Tokyo', 
-    'Sydney',
-    'Mumbai',
-    'Moscow'
-  ];
-  
+
   // Fetch complete weather data (current + comparison)
   export const fetchCompleteWeatherData = async (city: string): Promise<WeatherData> => {
     try {

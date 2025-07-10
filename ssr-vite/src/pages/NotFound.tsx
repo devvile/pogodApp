@@ -5,7 +5,6 @@ function NotFound() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center px-4">
       <div className="text-center max-w-2xl mx-auto">
-        {/* Weather Icon */}
         <div className="mb-2">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-2xl">
           <CloudOff className="text-white" size={40} />
@@ -30,7 +29,6 @@ function NotFound() {
             action="back" 
             className="mb-0"
           />
-          
           <BackButton 
             variant="filled" 
             action="home" 

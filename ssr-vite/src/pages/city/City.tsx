@@ -10,7 +10,6 @@ import CurrentWeatherTitle from './components/CurrentWeatherTitle';
 import BackButton from '../../components/ui/BackButton';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store';
-import { useCurrentWeather } from '../../hooks/useWeather';
 
 function CityPage() {
   const weatherData:WeatherData = useSelector((state:RootState)=>state.weather);
@@ -18,10 +17,6 @@ function CityPage() {
   const navigate = useNavigate();
   const [searchCity, setSearchCity] = useState('');
   const [currentWeather, setCurrentWeather] = useState(weatherData.current);
-
-  const {data, isLoading, error} = useCurrentWeather("Warsaw");
-
-
   useEffect(() => {
     if (city) {
       setCurrentWeather({
@@ -35,7 +30,7 @@ function CityPage() {
   const handleSearch = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchCity.trim()) {
-      navigate(`${encodeURIComponent(searchCity.trim())}`);
+      navigate(`/${encodeURIComponent(searchCity.trim())}`);
       setSearchCity('');
     }
   };
@@ -45,9 +40,8 @@ function CityPage() {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm"></div>
         <div className="relative container mx-auto px-4 py-8">
-          <BackButton/>
+          <BackButton action='home'/>
           <CurrentWeatherTitle title = {'Weather Dashboard' } subtitle='Stay updated with weather conditions worldwide'/>
-          {/* Search Form */}
           <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
