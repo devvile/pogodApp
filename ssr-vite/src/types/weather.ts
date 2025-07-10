@@ -65,3 +65,13 @@ export interface OpenWeatherResponse {
       this.name = 'WeatherApiError';
     }
   }
+
+  export interface CitySearchResult {
+    name: string;
+    country: string;
+    state?: string;
+    lat: number;
+    lon: number;
+  }
+  
+  export interface CitySearchResponse extends Array<CitySearchResult> {}
