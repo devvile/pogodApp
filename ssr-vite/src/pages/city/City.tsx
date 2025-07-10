@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Search } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+
+import SearchForm from "../../components/SearchForm";
 import ComparisonCities from "./components/ComaprisonCities";
 import CurrentWeatherCard from "./components/CurrentWeather/CurrentWeatherCard";
 import CurrentWeatherTitle from "./components/CurrentWeatherTitle";
 import BackButton from "../../components/ui/BackButton";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../store";
-import type { WeatherState } from "../../store/slices/weatherSlice";
+import Loader from "../../components/Loader";
+
 import { useCompleteWeather, useWeatherState } from "../../hooks/useWeather";
 import { setSelectedCity } from "../../store/slices/weatherSlice";
-import Loader from "../../components/Loader";
+import type { RootState } from "../../store";
+import type { WeatherState } from "../../store/slices/weatherSlice";
+
 function CityPage() {
   const weatherData: WeatherState = useSelector(
     (state: RootState) => state.weather
@@ -19,16 +22,19 @@ function CityPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchCity, setSearchCity] = useState("");
+
   if (!city) {
     navigate("/");
     return;
-  } // redirect o home for empty city
+  } // redirect to home for empty city
+
   const decodedCity = decodeURIComponent(city);
   const {
     isLoading: queryLoading,
     error: queryError,
     refetch,
   } = useCompleteWeather(decodedCity);
+
   // Get weather data from Redux (updated by the hook above)
   const {
     currentWeather,
@@ -87,27 +93,13 @@ function CityPage() {
             title={"Weather Dashboard"}
             subtitle="Stay updated with weather conditions worldwide"
           />
-          <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
-            <div className="relative">
-              <Search
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20}
-              />
-              <input
-                type="text"
-                value={searchCity}
-                onChange={(e) => setSearchCity(e.target.value)}
-                placeholder="Search for a city..."
-                className="w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
-              />
-              <button
-                type="submit"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-              >
-                Search
-              </button>
-            </div>
-          </form>
+          <SearchForm
+            variant="secondary"
+            searchCity={searchCity}
+            setSearchCity={setSearchCity}
+            onSearch={handleSearch}
+            placeholder="Search for a city..."
+          />
         </div>
         <main className="container mx-auto px-4 pb-8">
           {currentWeather && (
