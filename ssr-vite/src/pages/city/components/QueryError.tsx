@@ -1,4 +1,5 @@
 import BackButton from "@/components/ui/BackButton";
+import ContentCard from "@/components/ui/ContentCard";
 
 interface QueryErrorProps {
   error: string | null | Error;
@@ -6,7 +7,6 @@ interface QueryErrorProps {
 }
 
 const QueryError = ({ error, onTryAgain }: QueryErrorProps) => {
-  // Convert error to string for display
   const getErrorMessage = (error: string | null | Error): string => {
     if (!error) return 'An unknown error occurred';
     if (typeof error === 'string') return error;
@@ -15,7 +15,7 @@ const QueryError = ({ error, onTryAgain }: QueryErrorProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center">
+    <ContentCard>
       <div className="text-center text-white max-w-md">
         <h2 className="text-2xl font-bold mb-4">Weather data unavailable</h2>
         <p className="text-slate-300 mb-6">{getErrorMessage(error)}</p>
@@ -29,7 +29,7 @@ const QueryError = ({ error, onTryAgain }: QueryErrorProps) => {
           <BackButton variant="outlined" action="home" className="mb-0" />
         </div>
       </div>
-    </div>
+    </ContentCard>
   );
 };
 

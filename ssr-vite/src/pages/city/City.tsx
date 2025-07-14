@@ -5,7 +5,7 @@ import SearchForm from "@/components/shared/SearchForm";
 import ComparisonCities from "./components/ComaprisonCities";
 import ComparisonTable from "./components/ComparisonTable/ComparisonTable";
 import CurrentWeatherCard from "./components/CurrentWeather/CurrentWeatherCard";
-import CurrentWeatherTitle from "./components/CurrentWeatherTitle";
+import CurrentWeatherTitle from "./components/CurrentWeather/CurrentWeatherTitle";
 import BackButton from "@/components/ui/BackButton";
 import Loader from "@/components/Loader";
 import ViewToggle from "./components/ViewToggle";
@@ -14,6 +14,7 @@ import { setSelectedCity } from "@/store/slices/weatherSlice";
 import type { RootState } from "@/store";
 import type { WeatherState } from "@/store/slices/weatherSlice";
 import QueryError from "./components/QueryError";
+import ContentCard from "@/components/ui/ContentCard";
 
 function CityPage() {
   const weatherData: WeatherState = useSelector(
@@ -58,9 +59,9 @@ function CityPage() {
   const isLoading = queryLoading || reduxLoading;
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center">
+      <ContentCard>
         <Loader />
-      </div>
+      </ContentCard>
     );
   }
 
@@ -109,7 +110,7 @@ function CityPage() {
               ) : (
                 <ComparisonTable
                   cities={weatherData.comparisonWeather}
-                  baseCity={currentWeather} 
+                  baseCity={currentWeather}
                 />
               )}
             </>

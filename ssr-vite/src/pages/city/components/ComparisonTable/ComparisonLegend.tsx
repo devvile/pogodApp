@@ -1,5 +1,5 @@
 import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
-
+//Comparison table bottom legend
 const ComparisonLegend = () => {
   return (
     <div className="mt-4 text-center">

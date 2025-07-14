@@ -3,9 +3,9 @@ import {
   WeatherCell,
   MetricCell,
   RelativeDifferenceCell,
+  type RelativeValue, Cell
 } from "./CellsTemplates";
 import type { ComparisonCity, CurrentWeather } from "@/types/weather";
-import { type RelativeValue, Cell } from "./CellsTemplates";
 
 interface ComparisonRowProps {
   city: ComparisonCity;
@@ -13,7 +13,7 @@ interface ComparisonRowProps {
   onCityClick: (cityName: string) => void;
   calculateRelativeValue: (value: number, baseValue: number) => RelativeValue;
 }
-
+//Comparison Table row formatting
 export const ComparisonRow = ({
   city,
   baseCity,

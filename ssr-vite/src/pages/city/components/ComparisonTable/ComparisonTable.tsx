@@ -1,14 +1,14 @@
-import { useNavigate } from 'react-router';
-import { ComparisonRow } from './ComparisonRow';
-import  ComparisonLegend  from './ComparisonLegend';
-import type { ComparisonCity, CurrentWeather } from '@/types/weather';
-import { calculateRelativeValue } from './helpers';
+import { useNavigate } from "react-router";
+import { ComparisonRow } from "./ComparisonRow";
+import ComparisonLegend from "./ComparisonLegend";
+import type { ComparisonCity, CurrentWeather } from "@/types/weather";
+import { calculateRelativeValue } from "./helpers";
 
 export interface ComparisonTableProps {
   cities: ComparisonCity[];
   baseCity: CurrentWeather;
 }
-
+//Table comparising weather with baseline city
 const ComparisonTable = ({ cities, baseCity }: ComparisonTableProps) => {
   const navigate = useNavigate();
 
@@ -23,8 +23,8 @@ const ComparisonTable = ({ cities, baseCity }: ComparisonTableProps) => {
       </div>
     );
   }
-  const regularThStyling = 'text-center p-4 text-white font-semibold'
-  
+  const regularThStyling = "text-center p-4 text-white font-semibold";
+
   return (
     <div className="mb-8">
       <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
@@ -34,10 +34,16 @@ const ComparisonTable = ({ cities, baseCity }: ComparisonTableProps) => {
               <tr className="bg-white/10 border-b border-white/20">
                 <th className={` text-left ${regularThStyling}`}>City</th>
                 <th className={` text-center ${regularThStyling}`}>Weather</th>
-                <th className={` text-center ${regularThStyling}`}>Temperature</th>
-                <th className={` text-center ${regularThStyling}`}>Difference</th>
+                <th className={` text-center ${regularThStyling}`}>
+                  Temperature
+                </th>
+                <th className={` text-center ${regularThStyling}`}>
+                  Difference
+                </th>
                 <th className={` text-center ${regularThStyling}`}>Humidity</th>
-                <th className={` text-center ${regularThStyling}`}>Wind Speed</th>
+                <th className={` text-center ${regularThStyling}`}>
+                  Wind Speed
+                </th>
               </tr>
             </thead>
             <tbody>

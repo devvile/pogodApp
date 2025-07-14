@@ -6,7 +6,7 @@ import type { CurrentWeather } from "@/types/weather";
 interface CurrentWeatherCardProps{
     currentWeather:CurrentWeather
 }
-
+// Selected City (baseline) weather display
 const CurrentWeatherCard = ({currentWeather}:CurrentWeatherCardProps)=>{
     return (
         <div className="mb-8">

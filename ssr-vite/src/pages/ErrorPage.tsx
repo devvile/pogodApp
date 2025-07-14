@@ -1,5 +1,6 @@
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import BackButton from '@/components/ui/BackButton';
+import { AlertTriangle, RefreshCw } from "lucide-react";
+import BackButton from "@/components/ui/BackButton";
+import ContentCard from "@/components/ui/ContentCard";
 
 function ErrorPage() {
   const handleRetry = () => {
@@ -7,7 +8,7 @@ function ErrorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center px-4">
+    <ContentCard>
       <div className="text-center max-w-2xl mx-auto">
         <div className="mb-2">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-900 to-purple-900 rounded-full mb-6 shadow-2xl">
@@ -19,7 +20,7 @@ function ErrorPage() {
             Something Went Wrong
           </h2>
           <p className="text-xl text-slate-300 mb-6 max-w-lg mx-auto leading-relaxed">
-           Unexpected Error occured please try again...
+            Unexpected Error occured please try again...
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -30,14 +31,10 @@ function ErrorPage() {
             <RefreshCw size={20} />
             Try Again
           </button>
-          <BackButton 
-            variant="outlined" 
-            action="home" 
-            className="mb-0"
-          />
+          <BackButton variant="outlined" action="home" className="mb-0" />
         </div>
       </div>
-    </div>
+    </ContentCard>
   );
 }
 
