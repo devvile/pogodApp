@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import SearchForm from "../../components/SearchForm";
+import SearchForm from "@/components/shared/SearchForm";
 import WelcomeSection from "./components/WelcomeSection";
-import Loader from "../../components/Loader";
-import LazyHydrate from "../../components/LazyHydrate";
+import Loader from "@/components/Loader";
+import LazyHydrate from "@/components/LazyHydrate";
 
 function HomePage() {
   const navigate = useNavigate();

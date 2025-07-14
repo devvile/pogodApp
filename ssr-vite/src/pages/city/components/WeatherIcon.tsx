@@ -5,7 +5,7 @@ import {
     CloudSnow,
     Zap
   } from 'lucide-react';
-  import type { WeatherIconProps, WeatherIconType } from '../../../types/weather';
+  import type { WeatherIconProps, WeatherIconType } from '@/types/weather';
 
 const WeatherIcon: React.FC<WeatherIconProps> = ({ type, size = 24 }) => {
     const icons: Record<WeatherIconType, React.ReactNode> = {

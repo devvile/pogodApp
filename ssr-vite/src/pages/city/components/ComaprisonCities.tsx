@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import type { ComparisonCity} from '../../../types/weather';
+import type { ComparisonCity} from '@/types/weather';
 import WeatherIcon from './WeatherIcon';
 
 export interface ComparisonCitiesProps {

@@ -1,9 +1,9 @@
-import type { WeatherData,CurrentWeather, ComparisonCity }from '../types/weather';
-import type {OpenWeatherError, OpenWeatherResponse } from '../types/weather';
-import { WeatherApiError } from '../types/weather';
-import { BASE_URL, API_KEY } from '../const/config';
+import type { WeatherData,CurrentWeather, ComparisonCity }from '@/types/weather';
+import type {OpenWeatherError, OpenWeatherResponse } from '@/types/weather';
+import { WeatherApiError } from '@/types/weather';
+import { BASE_URL, API_KEY } from '@/const/config';
 import { transformToComparisonCity,transformToCurrentWeather } from './helpers';
-import { DEFAULT_COMPARISON_CITIES } from '../const/config';
+import { DEFAULT_COMPARISON_CITIES } from '@/const/config';
 
 if (!API_KEY) {
     throw new Error('OpenWeather API key is required. Please set REACT_APP_OPENWEATHER_API_KEY in your environment variables.');

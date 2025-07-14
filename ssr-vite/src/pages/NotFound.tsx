@@ -1,5 +1,5 @@
 import { CloudOff } from 'lucide-react';
-import BackButton from '../components/ui/BackButton';
+import BackButton from '@/components/ui/BackButton';
 
 function NotFound() {
   return (

@@ -1,5 +1,5 @@
-import type {CurrentWeather, ComparisonCity, WeatherIconType} from '../types/weather';
-import type {OpenWeatherResponse } from '../types/weather';
+import type {CurrentWeather, ComparisonCity, WeatherIconType} from '@/types/weather';
+import type {OpenWeatherResponse } from '@/types/weather';
 
 // Helper function to map OpenWeather condition to our icon system
 export const mapWeatherCondition = (condition: string, icon: string): WeatherIconType => {

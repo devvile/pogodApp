@@ -1,7 +1,7 @@
-import HomePage from "../pages/home/Home";
-import NotFound from "../pages/NotFound";
-import CityPage from "../pages/city/City";
-import ErrorPage from "../pages/ErrorPage";
+import HomePage from "@/pages/home/Home";
+import NotFound from "@/pages/NotFound";
+import CityPage from "@/pages/city/City";
+import ErrorPage from "@/pages/ErrorPage";
 export const routes = [
   {
     path: "/",

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import WelcomeSection from "../pages/home/components/WelcomeSection";
+import WelcomeSection from "@/pages/home/components/WelcomeSection";
 import LazyHydrate from "./LazyHydrate";
 import { Loader } from "lucide-react";
 

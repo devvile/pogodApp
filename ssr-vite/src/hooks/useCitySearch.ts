@@ -1,19 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, useCallback } from "react";
-import { fetchCitiesSuggestions } from "../services/citiesApi";
+import { fetchCitiesSuggestions } from "@/services/citiesApi";
 
 export const useCitySearch = () => {
-    const [searchQuery, setSearchQuery] = useState('');
+    const [_searchQuery, setSearchQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
   
     // Debounced search to avoid too many API calls
     const searchCities = useCallback((query: string) => {
       setSearchQuery(query);
-      
-      // Debounce the actual query
       const timeoutId = setTimeout(() => {
         setDebouncedQuery(query);
-      }, 300); // 300ms delay
+      }, 300); 
   
       return () => clearTimeout(timeoutId);
     }, []);

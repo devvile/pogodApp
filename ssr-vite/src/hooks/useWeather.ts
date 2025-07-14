@@ -14,9 +14,9 @@ import {
   setWeatherLoading, 
   setWeatherError,
   clearWeatherError 
-} from "../store/slices/weatherSlice";
-import { WeatherApiError } from "../types/weather";
-import type { RootState } from "../store";
+} from "@/store/slices/weatherSlice";
+import { WeatherApiError } from "@/types/weather";
+import type { RootState } from "@/store";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "./helpers";
 

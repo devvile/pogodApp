@@ -1,4 +1,4 @@
-import { WeatherApiError } from "../types/weather";
+import { WeatherApiError } from "@/types/weather";
 
 export const getErrorMessage = (error: WeatherApiError): string => {
     if (!error.statusCode) return error.message || "Failed to fetch weather data";

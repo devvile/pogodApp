@@ -1,8 +1,8 @@
 // store/weatherSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { CurrentWeather, ComparisonCity, WeatherData} from "../../types/weather"
-import { DEFAULT_COMPARISON_CITIES } from "../../const/config";
+import type { CurrentWeather, ComparisonCity, WeatherData} from "@/types/weather"
+import { DEFAULT_COMPARISON_CITIES } from "@/const/config";
 
 export interface WeatherState {
   // Weather data (updated by TanStack Query)

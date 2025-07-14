@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
-import SearchForm from "../../components/SearchForm";
+import SearchForm from "../../components/shared/SearchForm";
 import ComparisonCities from "./components/ComaprisonCities";
 import CurrentWeatherCard from "./components/CurrentWeather/CurrentWeatherCard";
 import CurrentWeatherTitle from "./components/CurrentWeatherTitle";
@@ -72,7 +72,7 @@ function CityPage() {
           <div className="flex gap-4 justify-center">
             <button
               onClick={() => refetch()}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+              className="bg-purple-800 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition-colors"
             >
               Try Again
             </button>

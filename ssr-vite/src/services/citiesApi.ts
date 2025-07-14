@@ -1,6 +1,6 @@
-import { API_KEY } from "../const/config";
-import { CITIES_OPTIONS_URL } from "../const/config";
-import type { CitySearchResponse, CitySearchResult } from "../types/weather";
+import { API_KEY } from "@/const/config";
+import { CITIES_OPTIONS_URL } from "@/const/config";
+import type { CitySearchResponse, CitySearchResult } from "@/types/weather";
 
 export const fetchCitiesSuggestions = async (
   query: string
