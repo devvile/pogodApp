@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server";
 import { createMemoryRouter } from "react-router";
-import { routes } from "./shared/routes";
+import { routes } from "./routes/routes";
 import { createStore } from "./store";
 import App from "./App"; 
 

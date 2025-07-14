@@ -1,5 +1,7 @@
+// hooks/useWeather.ts - Updated with memoized selectors
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { 
   fetchCurrentWeather, 
@@ -19,6 +21,27 @@ import { WeatherApiError } from "@/types/weather";
 import type { RootState } from "@/store";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "./helpers";
+
+// Memoized selectors
+const selectWeatherState = (state: RootState) => state.weather;
+
+const selectWeatherData = createSelector(
+  [selectWeatherState],
+  (weather) => ({
+    currentWeather: weather.currentWeather,
+    comparisonWeather: weather.comparisonWeather,
+    isLoading: weather.isLoading,
+    error: weather.error,
+  })
+);
+
+const selectWeatherUIState = createSelector(
+  [selectWeatherState],
+  (weather) => ({
+    comparisonCities: weather.comparisonCities,
+    selectedCity: weather.selectedCity,
+  })
+);
 
 // Hook for current weather that updates Redux
 export const useCurrentWeather = (city: string) => {
@@ -74,7 +97,7 @@ export const useCurrentWeather = (city: string) => {
 // Hook for comparison weather that updates Redux
 export const useComparisonWeather = (cities?: string[]) => {
   const dispatch = useDispatch();
-  const { comparisonCities } = useSelector((state: RootState) => state.weather);
+  const { comparisonCities } = useSelector(selectWeatherUIState);
   const citiesToFetch = cities || comparisonCities;
 
   const query = useQuery({
@@ -154,19 +177,11 @@ export const useCompleteWeather = (city: string) => {
   return query;
 };
 
-// Selector hooks for easy access to Redux state
+// Memoized selector hooks for easy access to Redux state
 export const useWeatherState = () => {
-  return useSelector((state: RootState) => ({
-    currentWeather: state.weather.currentWeather,
-    comparisonWeather: state.weather.comparisonWeather,
-    isLoading: state.weather.isLoading,
-    error: state.weather.error,
-  }));
+  return useSelector(selectWeatherData);
 };
 
 export const useWeatherUIState = () => {
-  return useSelector((state: RootState) => ({
-    comparisonCities: state.weather.comparisonCities,
-    selectedCity: state.weather.selectedCity,
-  }));
+  return useSelector(selectWeatherUIState);
 };

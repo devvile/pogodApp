@@ -2,7 +2,7 @@ import { hydrateRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import { createStore } from "./store";
-import { routes } from "./shared/routes";
+import { routes } from "./routes/routes";
 import "./index.css";
 
 let preloadedState = undefined;
