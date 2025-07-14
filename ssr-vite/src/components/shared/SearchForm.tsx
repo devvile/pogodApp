@@ -1,7 +1,8 @@
 import type { FormEvent } from 'react';
 import { useSearchForm } from '@/hooks/useSearchForm';
-import  SuggestionsDropdown  from './SuggestionsDropdown';
 import { SearchInput } from '../ui/SearchInput';
+import  SuggestionsDropdown  from './SuggestionsDropdown';
+import { ValidationErrors } from '../ValidationErrors';
 
 interface SearchFormProps {
   searchCity: string;
@@ -27,10 +28,13 @@ function SearchForm({
     inputRef,
     suggestions,
     isLoading,
+    validation,
+    showValidation,
     handleInputChange,
     handleSuggestionClick,
     handleKeyDown,
-  } = useSearchForm({  setSearchCity, onSearch });
+    handleFormSubmit,
+  } = useSearchForm({ searchCity, setSearchCity, onSearch });
 
   const containerClass = variant === 'primary' 
     ? `mb-8 ${className}`
@@ -42,7 +46,7 @@ function SearchForm({
 
   return (
     <div className={containerClass} ref={searchRef}>
-      <form onSubmit={onSearch} className="relative">
+      <form onSubmit={handleFormSubmit} className="relative">
         <div className={formContainerClass}>
           <SearchInput
             ref={inputRef}
@@ -51,6 +55,7 @@ function SearchForm({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             variant={variant}
+            hasError={showValidation && !validation.isValid}
           />
         </div>
         <SuggestionsDropdown
@@ -59,6 +64,10 @@ function SearchForm({
           suggestions={suggestions}
           selectedIndex={selectedIndex}
           onSuggestionClick={handleSuggestionClick}
+        />
+        <ValidationErrors 
+          errors={validation.errors} 
+          show={showValidation && !validation.isValid} 
         />
       </form>
     </div>

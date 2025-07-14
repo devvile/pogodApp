@@ -1,16 +1,20 @@
+// hooks/useSearchForm.ts
 import { useState, useEffect, useRef } from 'react';
 import type { FormEvent } from 'react';
 import { useCitySearch } from '@/hooks/useCitySearch';
+import { validateSearchInput, sanitizeInput, type ValidationResult } from '@/utils/SearchValidations';
 
 interface UseSearchFormOptions {
- // searchCity: string;
+  searchCity: string;
   setSearchCity: (city: string) => void;
   onSearch: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-export const useSearchForm = ({ setSearchCity, onSearch }: UseSearchFormOptions) => {
+export const useSearchForm = ({ searchCity, setSearchCity, onSearch }: UseSearchFormOptions) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [validation, setValidation] = useState<ValidationResult>({ isValid: true, errors: [] });
+  const [showValidation, setShowValidation] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -20,8 +24,14 @@ export const useSearchForm = ({ setSearchCity, onSearch }: UseSearchFormOptions)
     const value = e.target.value;
     setSearchCity(value);
     setSelectedIndex(-1);
+    setShowValidation(false); // Hide validation while typing
     
-    if (value.trim().length >= 2) {
+    // Validate input
+    const validationResult = validateSearchInput(value);
+    setValidation(validationResult);
+    
+    // Only search if input is valid and has enough characters
+    if (validationResult.isValid && value.trim().length >= 2) {
       searchCities(value.trim());
       setIsOpen(true);
     } else {
@@ -33,6 +43,8 @@ export const useSearchForm = ({ setSearchCity, onSearch }: UseSearchFormOptions)
     const cityName = `${suggestion.name}, ${suggestion.country}`;
     setSearchCity(cityName);
     setIsOpen(false);
+    setShowValidation(false);
+    setValidation({ isValid: true, errors: [] }); // Reset validation for suggestions
     inputRef.current?.focus();
   };
 
@@ -55,13 +67,36 @@ export const useSearchForm = ({ setSearchCity, onSearch }: UseSearchFormOptions)
         if (selectedIndex >= 0 && suggestions[selectedIndex]) {
           handleSuggestionClick(suggestions[selectedIndex]);
         } else {
-          onSearch(e as any);
+          const validationResult = validateSearchInput(searchCity);
+          if (validationResult.isValid) {
+            // Sanitize/trim input before submitting
+            const sanitizedInput = sanitizeInput(searchCity);
+            setSearchCity(sanitizedInput);
+            onSearch(e as any);
+          } else {
+            setShowValidation(true);
+          }
         }
         break;
       case 'Escape':
         setIsOpen(false);
         setSelectedIndex(-1);
         break;
+    }
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const validationResult = validateSearchInput(searchCity);
+    if (validationResult.isValid) {
+      const sanitizedInput = sanitizeInput(searchCity);
+      setSearchCity(sanitizedInput);
+      setShowValidation(false);
+      onSearch(e);
+    } else {
+      setShowValidation(true);
+      setValidation(validationResult);
     }
   };
 
@@ -84,8 +119,11 @@ export const useSearchForm = ({ setSearchCity, onSearch }: UseSearchFormOptions)
     inputRef,
     suggestions,
     isLoading,
+    validation,
+    showValidation,
     handleInputChange,
     handleSuggestionClick,
     handleKeyDown,
+    handleFormSubmit,
   };
 };

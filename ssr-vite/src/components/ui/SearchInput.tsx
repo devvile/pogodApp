@@ -1,6 +1,5 @@
 import { Search } from 'lucide-react';
-import {  forwardRef } from 'react';
-import type {ForwardedRef} from 'react';
+import { forwardRef } from 'react';
 
 interface SearchInputProps {
   value: string;
@@ -8,10 +7,11 @@ interface SearchInputProps {
   onKeyDown: (e: React.KeyboardEvent) => void;
   placeholder: string;
   variant: 'primary' | 'secondary';
+  hasError?: boolean;
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ value, onChange, onKeyDown, placeholder, variant }, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ value, onChange, onKeyDown, placeholder, variant, hasError = false }, ref) => {
     if (variant === 'primary') {
       return (
         <div className="flex items-center">
@@ -23,7 +23,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onChange={onChange}
             onKeyDown={onKeyDown}
             placeholder={placeholder}
-            className="flex-1 px-6 py-4 bg-transparent text-white placeholder-slate-400 text-lg focus:outline-none"
+            className={`flex-1 px-6 py-4 bg-transparent text-white placeholder-slate-400 text-lg focus:outline-none ${
+              hasError ? 'border-red-500' : ''
+            }`}
             autoComplete="off"
           />
           <button
@@ -46,7 +48,11 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           onChange={onChange}
           onKeyDown={onKeyDown}
           placeholder={placeholder}
-          className="w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
+          className={`w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border rounded-xl text-white placeholder-gray-300 focus:outline-none transition-all duration-300 ${
+            hasError 
+              ? 'border-red-500 focus:ring-2 focus:ring-red-400' 
+              : 'border-white/20 focus:ring-2 focus:ring-blue-400 focus:border-transparent'
+          }`}
           autoComplete="off"
         />
         <button
