@@ -17,6 +17,8 @@ export interface ComparisonCity {
   temperature: number;
   condition: string;
   icon: WeatherIconType;
+  humidity: number;
+  windSpeed:number;
 }
 
 export interface WeatherData {

@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-
-import SearchForm from "../../components/shared/SearchForm";
+import SearchForm from "@/components/shared/SearchForm";
 import ComparisonCities from "./components/ComaprisonCities";
+import ComparisonTable from "./components/ComparisonTable/ComparisonTable";
 import CurrentWeatherCard from "./components/CurrentWeather/CurrentWeatherCard";
 import CurrentWeatherTitle from "./components/CurrentWeatherTitle";
-import BackButton from "../../components/ui/BackButton";
-import Loader from "../../components/Loader";
-
-import { useCompleteWeather, useWeatherState } from "../../hooks/useWeather";
-import { setSelectedCity } from "../../store/slices/weatherSlice";
-import type { RootState } from "../../store";
-import type { WeatherState } from "../../store/slices/weatherSlice";
+import BackButton from "@/components/ui/BackButton";
+import Loader from "@/components/Loader";
+import ViewToggle from "./components/ViewToggle";
+import { useCompleteWeather, useWeatherState } from "@/hooks/useWeather";
+import { setSelectedCity } from "@/store/slices/weatherSlice";
+import type { RootState } from "@/store";
+import type { WeatherState } from "@/store/slices/weatherSlice";
+import QueryError from "./components/QueryError";
 
 function CityPage() {
   const weatherData: WeatherState = useSelector(
@@ -22,11 +23,12 @@ function CityPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchCity, setSearchCity] = useState("");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   if (!city) {
     navigate("/");
     return;
-  } // redirect to home for empty city
+  }
 
   const decodedCity = decodeURIComponent(city);
   const {
@@ -53,7 +55,6 @@ function CityPage() {
       setSearchCity("");
     }
   };
-
   const isLoading = queryLoading || reduxLoading;
   if (isLoading) {
     return (
@@ -63,25 +64,13 @@ function CityPage() {
     );
   }
 
-  if (reduxError || queryError) {
+  if (reduxError || queryError)
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center">
-        <div className="text-center text-white max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Weather data unavailable</h2>
-          <p className="text-slate-300 mb-6">{reduxError}</p>
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => refetch()}
-              className="bg-purple-800 hover:bg-purple-600 text-white px-6 py-2 rounded-lg transition-colors"
-            >
-              Try Again
-            </button>
-            <BackButton variant="outlined" action="home" className="mb-0" />
-          </div>
-        </div>
-      </div>
+      <QueryError
+        error={reduxError || queryError}
+        onTryAgain={() => refetch()}
+      />
     );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900">
@@ -105,7 +94,26 @@ function CityPage() {
           {currentWeather && (
             <CurrentWeatherCard currentWeather={currentWeather} />
           )}
-          <ComparisonCities cities={weatherData.comparisonWeather} />
+
+          {weatherData.comparisonWeather.length > 0 && currentWeather && (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div></div>
+                <ViewToggle viewMode={viewMode} onToggle={setViewMode} />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">
+                Compare with Other Cities
+              </h3>
+              {viewMode === "cards" ? (
+                <ComparisonCities cities={weatherData.comparisonWeather} />
+              ) : (
+                <ComparisonTable
+                  cities={weatherData.comparisonWeather}
+                  baseCity={currentWeather} 
+                />
+              )}
+            </>
+          )}
         </main>
       </div>
     </div>

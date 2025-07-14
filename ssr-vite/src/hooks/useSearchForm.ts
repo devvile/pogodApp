@@ -1,8 +1,7 @@
-// hooks/useSearchForm.ts
 import { useState, useEffect, useRef } from 'react';
 import type { FormEvent } from 'react';
 import { useCitySearch } from '@/hooks/useCitySearch';
-import { validateSearchInput, sanitizeInput, type ValidationResult } from '@/utils/SearchValidations';
+import { validateSearchInput, sanitizeInput, type ValidationResult } from '@/utils/searchValidations'
 
 interface UseSearchFormOptions {
   searchCity: string;
@@ -25,8 +24,6 @@ export const useSearchForm = ({ searchCity, setSearchCity, onSearch }: UseSearch
     setSearchCity(value);
     setSelectedIndex(-1);
     setShowValidation(false); // Hide validation while typing
-    
-    // Validate input
     const validationResult = validateSearchInput(value);
     setValidation(validationResult);
     
@@ -44,7 +41,7 @@ export const useSearchForm = ({ searchCity, setSearchCity, onSearch }: UseSearch
     setSearchCity(cityName);
     setIsOpen(false);
     setShowValidation(false);
-    setValidation({ isValid: true, errors: [] }); // Reset validation for suggestions
+    setValidation({ isValid: true, errors: [] }); 
     inputRef.current?.focus();
   };
 
@@ -69,7 +66,6 @@ export const useSearchForm = ({ searchCity, setSearchCity, onSearch }: UseSearch
         } else {
           const validationResult = validateSearchInput(searchCity);
           if (validationResult.isValid) {
-            // Sanitize/trim input before submitting
             const sanitizedInput = sanitizeInput(searchCity);
             setSearchCity(sanitizedInput);
             onSearch(e as any);

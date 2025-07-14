@@ -42,5 +42,7 @@ export const mapWeatherCondition = (condition: string, icon: string): WeatherIco
     country: data.sys.country,
     temperature: Math.round(data.main.temp),
     condition: data.weather[0].description,
-    icon: mapWeatherCondition(data.weather[0].main, data.weather[0].icon)
+    icon: mapWeatherCondition(data.weather[0].main, data.weather[0].icon),
+    humidity: data.main.humidity,
+    windSpeed: Math.round(data.wind.speed * 3.6), 
   });
