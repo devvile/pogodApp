@@ -4,8 +4,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { 
   fetchCompleteWeatherData,
-  fetchThreeDayForecast,
-  fetchComparisonWeather 
 } from "../services/weatherApi";
 import { weatherQueryKeys } from "./weatherQueryKeys";
 import { 
@@ -83,55 +81,6 @@ export const useCompleteWeather = (city: string) => {
   }, [query.error, dispatch]);
 
   return query;
-};
-
-// Simple forecast-only hook
-export const useForecast = (city: string) => {
-  const query = useQuery({
-    queryKey: weatherQueryKeys.forecast(city),
-    queryFn: () => fetchThreeDayForecast(city),
-    enabled: !!city && city.trim().length > 0,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 2,
-  });
-
-  useEffect(() => {
-    if (query.error) {
-      toast.error("Failed to load forecast data");
-    }
-  }, [query.error]);
-
-  return query;
-};
-
-// Simple comparison weather hook
-export const useComparisonWeather = (cities?: string[]) => {
-  const { comparisonCities } = useSelector(selectWeatherUIState);
-  const citiesToFetch = cities || comparisonCities;
-
-  const query = useQuery({
-    queryKey: weatherQueryKeys.comparison(citiesToFetch),
-    queryFn: () => fetchComparisonWeather(citiesToFetch),
-    enabled: citiesToFetch.length > 0,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 2,
-  });
-
-  useEffect(() => {
-    if (query.error) {
-      toast.error("Some comparison cities failed to load");
-    }
-  }, [query.error]);
-
-  return query;
-};
-
-// DEPRECATED: Use useCompleteWeather instead
-export const useCurrentWeather = (city: string) => {
-  console.warn('useCurrentWeather is deprecated. Use useCompleteWeather instead for better performance.');
-  return useCompleteWeather(city);
 };
 
 // Selector hooks for easy access to Redux state
