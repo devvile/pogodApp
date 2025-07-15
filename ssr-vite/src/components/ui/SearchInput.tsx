@@ -8,6 +8,7 @@ interface SearchInputProps {
   onKeyDown: (e: React.KeyboardEvent) => void;
   placeholder: string;
   variant: 'primary' | 'secondary';
+  hasError?:boolean
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
