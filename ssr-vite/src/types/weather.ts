@@ -1,6 +1,5 @@
 export type WeatherIconType = 'sunny' | 'cloudy' | 'partly-cloudy' | 'rainy' | 'snow' | 'thunderstorm';
 
-// Keep your existing CurrentWeather - just add what we need
 export interface CurrentWeather {
   city: string;
   country: string;
@@ -12,7 +11,6 @@ export interface CurrentWeather {
   icon: WeatherIconType;
 }
 
-// Keep your existing ComparisonCity
 export interface ComparisonCity {
   city: string;
   country: string;
@@ -23,7 +21,7 @@ export interface ComparisonCity {
   windSpeed: number;
 }
 
-// Simple forecast - just the basics
+
 export interface ForecastData {
   date: string;
   dayName: string; // "Today", "Tomorrow", "Day After Tomorrow"
@@ -38,10 +36,9 @@ export interface ForecastData {
   windSpeed: number;
 }
 
-// Update WeatherData to include forecast
 export interface WeatherData {
   current: CurrentWeather;
-  forecast: ForecastData[]; // Added this
+  forecast: ForecastData[]; 
   comparison: ComparisonCity[];
 }
 
@@ -50,7 +47,6 @@ export interface WeatherIconProps {
   size?: number;
 }
 
-// API response types (keep simple)
 export interface OpenWeatherResponse {
   name: string;
   sys: {

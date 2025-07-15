@@ -19,14 +19,12 @@ import type { RootState } from "@/store";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "./helpers";
 
-// Memoized selectors
 const selectWeatherState = (state: RootState) => state.weather;
-
 const selectWeatherData = createSelector(
   [selectWeatherState],
   (weather) => ({
     currentWeather: weather.currentWeather,
-    forecast: weather.forecast, // Added forecast
+    forecast: weather.forecast,
     comparisonWeather: weather.comparisonWeather,
     isLoading: weather.isLoading,
     error: weather.error,

@@ -1,5 +1,5 @@
 import { ArrowUp, ArrowDown, MapPin, Minus } from "lucide-react";
-import WeatherIcon from "../WeatherIcon";
+import WeatherIcon from "../../WeatherIcon";
 import type { WeatherIconType } from "@/types/weather";
 
 export interface RelativeValue {

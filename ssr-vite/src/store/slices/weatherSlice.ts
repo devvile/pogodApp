@@ -5,12 +5,14 @@ import type {
   CurrentWeather,
   ComparisonCity,
   WeatherData,
+  ForecastData, // Added this import
 } from "@/types/weather";
 import { DEFAULT_COMPARISON_CITIES } from "@/const/config";
 
 export interface WeatherState {
   // Weather data (updated by TanStack Query)
   currentWeather: CurrentWeather | null;
+  forecast: ForecastData[]; // Added this line
   comparisonWeather: ComparisonCity[];
 
   // UI state
@@ -24,6 +26,7 @@ export interface WeatherState {
 
 const initialState: WeatherState = {
   currentWeather: null,
+  forecast: [], // Added this line
   comparisonWeather: [],
   comparisonCities: DEFAULT_COMPARISON_CITIES,
   selectedCity: null,
@@ -37,12 +40,18 @@ export const weatherSlice = createSlice({
   reducers: {
     setWeatherData: (state, action: PayloadAction<WeatherData>) => {
       state.currentWeather = action.payload.current;
+      state.forecast = action.payload.forecast; // Added this line
       state.comparisonWeather = action.payload.comparison;
       state.error = null;
     },
 
     setCurrentWeather: (state, action: PayloadAction<CurrentWeather>) => {
       state.currentWeather = action.payload;
+    },
+
+    // Added this new action
+    setForecastData: (state, action: PayloadAction<ForecastData[]>) => {
+      state.forecast = action.payload;
     },
 
     setComparisonWeatherData: (
@@ -74,6 +83,7 @@ export const weatherSlice = createSlice({
     // Reset actions
     resetWeatherData: (state) => {
       state.currentWeather = null;
+      state.forecast = []; // Added this line
       state.comparisonWeather = [];
       state.isLoading = false;
       state.error = null;
@@ -84,6 +94,7 @@ export const weatherSlice = createSlice({
 export const {
   setWeatherData,
   setCurrentWeather,
+  setForecastData, // Added this export
   setComparisonWeatherData,
   setWeatherLoading,
   setWeatherError,
