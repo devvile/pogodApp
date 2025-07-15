@@ -87,6 +87,7 @@ export interface OpenWeatherForecastResponse {
     dt_txt: string;
   }>;
   city: {
+    timezone: any;
     name: string;
     country: string;
   };
