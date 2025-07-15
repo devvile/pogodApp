@@ -1,11 +1,11 @@
 import { Wind, Droplets } from "lucide-react";
 
-interface WeatherDetailsTileProps {
+interface ForecastDetailsTileProps {
   type: "wind" | "humidity";
   value: number;
 }
 
-const WeatherDetailsTile = ({ type, value }: WeatherDetailsTileProps) => {
+const ForecastDetailsTile = ({ type, value }: ForecastDetailsTileProps) => {
   const config = {
     humidity: {
       icon: Droplets,
@@ -34,4 +34,4 @@ const WeatherDetailsTile = ({ type, value }: WeatherDetailsTileProps) => {
   );
 };
 
-export default WeatherDetailsTile;
+export default ForecastDetailsTile;

@@ -1,4 +1,3 @@
-// components/ViewToggle.tsx
 import { Grid, Table } from "lucide-react";
 
 interface ViewToggleProps {

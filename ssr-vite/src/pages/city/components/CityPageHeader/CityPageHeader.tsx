@@ -1,6 +1,6 @@
 import BackButton from "@/components/ui/BackButton";
 import { SearchForm } from "@/components";
-import CurrentWeatherTitle from "./MainCityWeatherSection/CurrentWeatherTitle";
+import CurrentWeatherTitle from "./CurrentWeatherTitle";
 
 interface CitypPageHeaderProps {
     searchCity:string;

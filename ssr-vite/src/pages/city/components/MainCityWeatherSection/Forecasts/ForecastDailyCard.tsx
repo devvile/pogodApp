@@ -1,15 +1,15 @@
-import WeatherIcon from "../WeatherIcon";
-import WeatherDetailsTile from "./DailyWeatherDetailsTile";
+import WeatherIcon from "../../WeatherIcon";
+import WeatherDetailsTile from "./ForecastDetailsTile";
 import type { ForecastData } from "@/types/weather";
 
-interface ForecastCardProps {
+interface ForecastDailyCardProps {
   day: ForecastData;
   isToday?: boolean;
 }
 
-const ForecastCard = ({ day, isToday = false }: ForecastCardProps) => {
+const ForecastDailyCard = ({ day, isToday = false }: ForecastDailyCardProps) => {
   return (
-    <div
+    <article
       className={`
         bg-gradient-to-br from-purple/2 to-white/1 backdrop-blur-lg rounded-xl p-6 
         border border-white/3 shadow-xl text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl
@@ -36,9 +36,8 @@ const ForecastCard = ({ day, isToday = false }: ForecastCardProps) => {
         <WeatherDetailsTile type="humidity" value={day.humidity} />
         <WeatherDetailsTile type="wind" value={day.windSpeed} />
       </div>
-
-    </div>
+    </article>
   );
 };
 
-export default ForecastCard;
+export default ForecastDailyCard;

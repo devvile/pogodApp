@@ -7,7 +7,7 @@ import { setSelectedCity } from "@/store/slices/weatherSlice";
 import QueryError from "./components/QueryError";
 import ContentCard from "@/components/ui/ContentCard";
 import MainCityWeatherCard from "./components/MainCityWeatherSection/MainCityWeatherCard";
-import CityPageHeader from "./components/CityPageHeader";
+import CityPageHeader from "./components/CityPageHeader/CityPageHeader";
 import ComparisonSection from "./components/ComparisonSection/ComparisonSection";
 
 function CityPage() {
