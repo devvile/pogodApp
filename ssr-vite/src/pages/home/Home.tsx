@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { SearchForm, Loader, LazyHydrate, ContentCard } from "@/components";
+import { SearchForm, LazyHydrate, ContentCard } from "@/components";
 import WelcomeSection from "./components/WelcomeSection";
 
 function HomePage() {
