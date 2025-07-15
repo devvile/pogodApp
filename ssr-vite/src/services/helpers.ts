@@ -1,6 +1,6 @@
 import type { CurrentWeather, ForecastData, WeatherIconType, OpenWeatherForecastResponse } from '@/types/weather';
 
-// Your existing weather condition mapping
+// Weather condition mapping
 export const mapWeatherCondition = (condition: string, icon: string): WeatherIconType => {
   const conditionMap: Record<string, WeatherIconType> = {
     'Clear': 'sunny',
@@ -23,7 +23,7 @@ export const mapWeatherCondition = (condition: string, icon: string): WeatherIco
   return conditionMap[condition] || 'partly-cloudy';
 };
 
-// Extract current weather from forecast (first entry)
+// Extract current weather from forecast
 export const extractCurrentWeatherFromForecast = (data: OpenWeatherForecastResponse): CurrentWeather => {
   const current = data.list[0];
   
@@ -33,26 +33,72 @@ export const extractCurrentWeatherFromForecast = (data: OpenWeatherForecastRespo
     temperature: Math.round(current.main.temp),
     condition: current.weather[0].description,
     humidity: current.main.humidity,
-    windSpeed: Math.round(current.wind.speed * 3.6), // m/s to km/h
-    visibility: 10, // Default value since forecast doesn't include this
+    windSpeed: Math.round(current.wind.speed * 3.6),
+    visibility: 10,
     icon: mapWeatherCondition(current.weather[0].main, current.weather[0].icon)
   };
 };
 
-// Transform forecast data to 3 days
-export const transformToForecastData = (data: OpenWeatherForecastResponse): ForecastData[] => {
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const dayAfterTomorrow = new Date(today);
-  dayAfterTomorrow.setDate(today.getDate() + 2);
+// Get city date using timezone from API
+const getCityDate = (utcTimestamp: number, cityTimezoneOffset: number): Date => {
+  return new Date((utcTimestamp + cityTimezoneOffset) * 1000);
+};
 
-  // Group by date
+// Get date key in city's timezone
+const getCityDateKey = (utcTimestamp: number, cityTimezoneOffset: number): string => {
+  const cityDate = getCityDate(utcTimestamp, cityTimezoneOffset);
+  const year = cityDate.getUTCFullYear();
+  const month = String(cityDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(cityDate.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+// Create "Today" forecast from current weather when API data is missing
+const createTodayFromCurrent = (data: OpenWeatherForecastResponse, todayKey: string): ForecastData => {
+  const current = data.list[0];
+  
+  return {
+    date: todayKey,
+    dayName: 'Today',
+    temperature: {
+      min: Math.round(current.main.temp),
+      max: Math.round(current.main.temp),
+      current: Math.round(current.main.temp)
+    },
+    condition: current.weather[0].description,
+    icon: mapWeatherCondition(current.weather[0].main, current.weather[0].icon),
+    humidity: current.main.humidity,
+    windSpeed: Math.round(current.wind.speed * 3.6)
+  };
+};
+
+// Transform forecast data to 3 days with proper timezone handling
+export const transformToForecastData = (data: OpenWeatherForecastResponse): ForecastData[] => {
+  const cityTimezoneOffset = data.city.timezone;
+  
+  // Get current time in city's timezone
+  const nowUtc = Math.floor(Date.now() / 1000);
+  const cityNow = getCityDate(nowUtc, cityTimezoneOffset);
+  
+  // Calculate today, tomorrow, day after tomorrow
+  const today = new Date(cityNow);
+  today.setUTCHours(0, 0, 0, 0);
+  
+  const tomorrow = new Date(today);
+  tomorrow.setUTCDate(today.getUTCDate() + 1);
+  
+  const dayAfterTomorrow = new Date(today);
+  dayAfterTomorrow.setUTCDate(today.getUTCDate() + 2);
+  
+  const todayKey = today.toISOString().split('T')[0];
+  const tomorrowKey = tomorrow.toISOString().split('T')[0];
+  const dayAfterKey = dayAfterTomorrow.toISOString().split('T')[0];
+
+  // Group by date using city's timezone
   const byDate: { [key: string]: typeof data.list } = {};
   
   data.list.forEach(item => {
-    const date = new Date(item.dt * 1000);
-    const dateKey = date.toISOString().split('T')[0];
+    const dateKey = getCityDateKey(item.dt, cityTimezoneOffset);
     
     if (!byDate[dateKey]) {
       byDate[dateKey] = [];
@@ -62,42 +108,48 @@ export const transformToForecastData = (data: OpenWeatherForecastResponse): Fore
 
   const result: ForecastData[] = [];
   
-  // Today
-  const todayKey = today.toISOString().split('T')[0];
+  // Today - use current weather if no forecast data available
   if (byDate[todayKey]) {
-    result.push(processDayForecast(byDate[todayKey], 'Today'));
+    result.push(processDayForecast(byDate[todayKey], 'Today', cityTimezoneOffset));
+  } else {
+    result.push(createTodayFromCurrent(data, todayKey));
   }
   
   // Tomorrow
-  const tomorrowKey = tomorrow.toISOString().split('T')[0];
   if (byDate[tomorrowKey]) {
-    result.push(processDayForecast(byDate[tomorrowKey], 'Tomorrow'));
+    result.push(processDayForecast(byDate[tomorrowKey], 'Tomorrow', cityTimezoneOffset));
   }
   
   // Day after tomorrow
-  const dayAfterKey = dayAfterTomorrow.toISOString().split('T')[0];
   if (byDate[dayAfterKey]) {
-    result.push(processDayForecast(byDate[dayAfterKey], 'Day After Tomorrow'));
+    result.push(processDayForecast(byDate[dayAfterKey], 'Day After Tomorrow', cityTimezoneOffset));
   }
 
   return result;
 };
 
 // Process one day of forecast data
-const processDayForecast = (dayData: OpenWeatherForecastResponse['list'], dayName: string): ForecastData => {
-  // Get temperatures
+const processDayForecast = (
+  dayData: OpenWeatherForecastResponse['list'], 
+  dayName: string,
+  cityTimezoneOffset: number
+): ForecastData => {
+  // Get min/max temperatures for the day
   const temps = dayData.map(item => item.main.temp);
   const minTemp = Math.min(...temps);
   const maxTemp = Math.max(...temps);
   
   // Use noon forecast or first available
   const noonForecast = dayData.find(item => {
-    const hour = new Date(item.dt * 1000).getHours();
+    const cityTime = getCityDate(item.dt, cityTimezoneOffset);
+    const hour = cityTime.getUTCHours();
     return hour >= 11 && hour <= 13;
   }) || dayData[0];
   
+  const forecastDate = getCityDateKey(noonForecast.dt, cityTimezoneOffset);
+  
   return {
-    date: new Date(noonForecast.dt * 1000).toISOString().split('T')[0],
+    date: forecastDate,
     dayName,
     temperature: {
       min: Math.round(minTemp),
