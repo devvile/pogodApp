@@ -19,7 +19,7 @@ export default function LazyHydrate({ children, fallback }: LazyHydrateProps) {
   }, []);
 
   if (!mounted) {
-    return <>{fallback}</>;
+    return <></>;
   }
 
   return (

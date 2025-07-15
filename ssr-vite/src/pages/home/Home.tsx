@@ -16,10 +16,10 @@ function HomePage() {
   };
 
   return (
+    <LazyHydrate>
     <ContentCard>
       <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
         <WelcomeSection />
-        <LazyHydrate fallback={<Loader />}>
           <SearchForm
             variant="primary"
             searchCity={searchCity}
@@ -27,9 +27,9 @@ function HomePage() {
             onSearch={handleSearch}
             placeholder="Enter city name (e.g., New York, London, Tokyo)"
           />
-        </LazyHydrate>
       </div>
     </ContentCard>
+    </LazyHydrate>
   );
 }
 
