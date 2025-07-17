@@ -1,24 +1,29 @@
-import { Search } from 'lucide-react';
-import { forwardRef } from 'react';
-import type { ForwardedRef } from 'react';
+import { Search } from "lucide-react";
+import { forwardRef } from "react";
+import type { ForwardedRef } from "react";
 
 interface SearchInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (e: React.KeyboardEvent) => void;
   placeholder: string;
-  variant: 'primary' | 'secondary';
-  hasError?:boolean
+  variant: "primary" | "secondary";
+  hasError?: boolean;
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ value, onChange, onKeyDown, placeholder, variant }, ref: ForwardedRef<HTMLInputElement>) => {
-    if (variant === 'primary') {
+  (
+    { value, onChange, onKeyDown, placeholder, variant },
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    if (variant === "primary") {
       return (
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center bg-white/2 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden">
-          {/* Search input section */}
           <div className="flex items-center flex-1 min-w-0">
-            <Search className="ml-4 sm:ml-6 text-slate-300 flex-shrink-0" size={20} />
+            <Search
+              className="ml-4 sm:ml-6 text-slate-300 flex-shrink-0"
+              size={20}
+            />
             <input
               ref={ref}
               type="text"
@@ -30,7 +35,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
               autoComplete="off"
             />
           </div>
-          
+
           <button
             type="submit"
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl
@@ -47,7 +52,10 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
 
     return (
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <Search
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+          size={20}
+        />
         <input
           ref={ref}
           type="text"
