@@ -1,8 +1,7 @@
 # PogodApp
 
-Aplikacja zbudowana na potrzeby zadania rekrutacyjnego dla Property Group Sp. z o.o. na stanowisko Senior JavaScript Developer.
-Pozwala sprawdzac prognoze pogody na 3 dni dla dowolnego miasta na swiecie w oparciu o intergracje z api Openweathermap.org.
-Pozawala na porownanie z miastami w Polsce w formie tabeli albo kart. 
+Aplikacja pozwala sprawdzac prognoze pogody na 3 dni dla dowolnego miasta na swiecie w oparciu o intergracje z api Openweathermap.org.
+Pozawala takze, na porownanie z miastami w Polsce w formie tabeli albo kart. 
 Dodalem tez smartsearch, czyli podpowiedzi dla wyszukiwanego miasta wraz z walidacja inputu. 
 Aplikacja jest SPA w technologii SSR.
 
