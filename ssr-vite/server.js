@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
+import cors from 'cors';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,13 +13,24 @@ function serializeState(state) {
 
 // Function to select port based on environment
 function getPort() {
-  return process.env.NODE_ENV === 'production' ? 3000 : 5173;
+  return process.env.NODE_ENV === 'production' ? 5000 : 5173;
 }
 
 async function createServer() {
   try {
     const app = express();
     console.log('Creating Vite server...');
+
+    // Configure CORS
+    const corsOptions = {
+      origin: true, // Allow all origins in development
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    };
+
+    // Apply CORS middleware
+    app.use(cors(corsOptions));
 
     const vite = await createViteServer({
       server: { middlewareMode: true },
