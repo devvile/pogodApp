@@ -10,7 +10,7 @@
     "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
     "preview": "cross-env NODE_ENV=production node server.js",
     "type-check": "tsc --noEmit",
-     "build:no-check": "vite build --outDir dist/client && vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "build:no-check": "vite build --outDir dist/client && vite build --ssr src/entry-server.jsx --outDir dist/server"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
