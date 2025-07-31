@@ -94,6 +94,18 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // Allow all hosts for production deployment
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      'pogodapp.onrender.com',
+      '.onrender.com', // Allow any subdomain of onrender.com
+      'all' // Allow all hosts (most permissive option)
+    ],
+    // Additional server options for production
+    cors: true,
+    // Handle proxy if needed
+    proxy: {},
   },
   
   // Optimize dependencies
